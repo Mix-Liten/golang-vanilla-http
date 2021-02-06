@@ -1,8 +1,11 @@
 package utils
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
+	"log"
+	"os"
 )
 
 type Note struct {
@@ -13,13 +16,22 @@ type Note struct {
 func getInput(field string) string {
 	var input string
 	fmt.Println("Enter file " + field + ":")
-	fmt.Scan(&input)
+	scanner := bufio.NewScanner(os.Stdin)
+	if scanner.Scan() {
+		input = scanner.Text()
+	}
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
 	return input
 }
 
 func CreateNote() *Note {
 	title := getInput("title")
 	bodyTxt := getInput("body")
+	if title == "" {
+		log.Fatal("Stop process whih no title...")
+	}
 	return &Note{
 		Title: title,
 		Body:  []byte(bodyTxt),
