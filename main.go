@@ -21,8 +21,14 @@ func indexHandler(w http.ResponseWriter, req *http.Request) {
 func articleHandler(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	articleName := vars["name"]
+	page := req.URL.Query().Get("p")
+	ua := req.Header.Get("User-Agent")
 	io.WriteString(w, "Articles: ")
 	io.WriteString(w, articleName)
+	io.WriteString(w, ", where page: ")
+	io.WriteString(w, page)
+	io.WriteString(w, "user-agent: ")
+	io.WriteString(w, ua)
 }
 
 func main() {
